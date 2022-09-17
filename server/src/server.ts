@@ -1,9 +1,15 @@
 import express from "express";
+import { PrismaClient} from '@prisma/client';
 
 const app = express();
+const prisma = new PrismaClient();
 
-app.get("/", (request, response) => {
-  response.send({ message: "Hello world" });
+app.use(express.json());
+
+app.get('/games', async (request, response) => {
+const games =  await prisma.game.findMany();
+
+return response.json(games);
 });
 
 app.listen(3333, () => {
