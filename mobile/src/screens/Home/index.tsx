@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import { FlatList, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
 
@@ -8,33 +9,44 @@ import { Heading } from '../../components/Heading';
 import { GameCard } from '../../components/GameCard';
 
 import { API_URL } from '@env';
+import { Background } from '../../components/Background';
+import { useNavigation } from '@react-navigation/native';
 
 export function Home() {
   const [games, setGames] = useState<GameCard[]>([]);
 
+  const navigation = useNavigation();
+
   useEffect(() => {
-    console.log('testeeee', API_URL);
     fetch(`${API_URL}/games`)
       .then((response) => response.json())
       .then((data) => setGames(data));
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <Image source={logoImg} style={styles.logo} />
-      <Heading
-        title="Encontre seu duo"
-        subtitle="Selecione o game que deseja jogar"
-      />
+  function handleOpenGame() {
+    navigation.navigate('game');
+  }
 
-      <FlatList
-        data={games}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <GameCard data={item} />}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        contentContainerStyle={styles.contentList}
-      />
-    </View>
+  return (
+    <Background>
+      <SafeAreaView style={styles.container}>
+        <Image source={logoImg} style={styles.logo} />
+        <Heading
+          title="Encontre seu duo"
+          subtitle="Selecione o game que deseja jogar"
+        />
+
+        <FlatList
+          data={games}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <GameCard data={item} onPress={handleOpenGame} />
+          )}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          contentContainerStyle={styles.contentList}
+        />
+      </SafeAreaView>
+    </Background>
   );
 }
