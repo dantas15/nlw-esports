@@ -23,8 +23,8 @@ export function Home() {
       .then((data) => setGames(data));
   }, []);
 
-  function handleOpenGame() {
-    navigation.navigate('game');
+  function handleOpenGame(gameData: GameCard) {
+    navigation.navigate('game', gameData);
   }
 
   return (
@@ -40,7 +40,7 @@ export function Home() {
           data={games}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <GameCard data={item} onPress={handleOpenGame} />
+            <GameCard data={item} onPress={() => handleOpenGame(item)} />
           )}
           showsHorizontalScrollIndicator={false}
           horizontal
