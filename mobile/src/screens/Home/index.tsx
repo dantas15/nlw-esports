@@ -35,7 +35,7 @@ export function Home() {
           title="Encontre seu duo"
           subtitle="Selecione o game que deseja jogar"
         />
-
+        //https://youtu.be/1deZ6dA-3f0?t=6168
         <FlatList
           data={games}
           keyExtractor={(item) => item.id}
